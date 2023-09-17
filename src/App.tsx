@@ -1,17 +1,15 @@
 import Cart from "./components/Cart";
 import Courses from "./components/Courses";
-import Nav from "./components/Nav";
+import Header from "./components/Header";
 
-function App() {
+const App = () => {
   return (
     <>
-      <Nav />
-      <div>
-        <Courses />
-        <Cart />
-      </div>
+      <Header />
+      <Courses />
+      <Cart />
     </>
   );
-}
+};
 
 export default App;
