@@ -2,8 +2,6 @@ import Cart from "./components/Cart";
 import Courses from "./components/Courses";
 import Nav from "./components/Nav";
 
-import "./styles/App.css";
-
 function App() {
   return (
     <>
