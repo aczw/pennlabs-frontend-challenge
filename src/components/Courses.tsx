@@ -3,7 +3,7 @@ import c from "../data/courses.json";
 
 type Course = {
   dept: string;
-  number: string;
+  number: number;
   title: string;
   prereqs?: string | string[];
   description: string;
@@ -46,7 +46,24 @@ const DescriptionText = ({ text }: { text: string }) => {
 };
 
 const Courses = () => {
-  const courseList = courses.map(
+  const [search, setSearch] = useState("");
+
+  // returns a list of courses that match the search query
+  const filterCourses = (courses: Course[], search: string) => {
+    if (search === "") {
+      return courses;
+    }
+
+    return courses.filter(({ number, dept, title, description }) => {
+      return (
+        (dept.toLowerCase() + " " + number.toString()).includes(search) ||
+        title.toLowerCase().includes(search) ||
+        description.toLowerCase().includes(search)
+      );
+    });
+  };
+
+  const courseList = filterCourses(courses, search).map(
     ({ dept, number, title, prereqs, description }) => {
       // we should display *something* if there are no prereqs. this lets
       // the user have a visual confirmation
@@ -86,8 +103,27 @@ const Courses = () => {
   );
 
   return (
-    <main className="grid grid-cols-1 gap-5 px-8 pb-8 pt-[calc(2rem+57px)] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {courseList}
+    <main className="flex flex-col items-center space-y-6 px-8 pb-8 pt-[calc(2rem+57px)]">
+      <div className="flex w-1/3 min-w-[250px] flex-col space-y-2">
+        <p className="text-center font-semibold">
+          Begin searching for a course title, description, or number!
+        </p>
+        <input
+          type="search"
+          className="h-10 w-full rounded-md border border-black/30 bg-gray-50 p-2 text-center"
+          value={search}
+          onChange={(e) => setSearch(e.target.value.toLowerCase())}
+        />
+      </div>
+      {courseList.length === 0 ? (
+        <p className="gap-5 text-zinc-600">
+          No courses found! Please refine your search.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {courseList}
+        </div>
+      )}
     </main>
   );
 };
