@@ -1,13 +1,6 @@
 import React, { useState } from "react";
+import { type Course } from "~/utils/types";
 import c from "../data/courses.json";
-
-type Course = {
-  dept: string;
-  number: number;
-  title: string;
-  prereqs?: string | string[];
-  description: string;
-};
 
 // `unknown` conversion is required because TS becomes confused
 // and we need to condense all the types first
@@ -36,16 +29,93 @@ const DescriptionText = ({ text }: { text: string }) => {
     <div className="flex flex-col space-y-3">
       <p className={open ? `line-clamp-none` : `line-clamp-3`}>{text}</p>
       <button
-        className="rounded-md bg-gray-100 py-1 text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:underline"
+        className="rounded-full bg-gray-100 py-1.5 text-gray-600 hover:bg-gray-200 hover:text-gray-800 hover:underline"
         onClick={() => setOpen(!open)}
       >
-        {open ? "see less" : "see more"}
+        {open ? "Show less" : "Show more"}
       </button>
     </div>
   );
 };
 
-const Courses = () => {
+const CourseComponent = ({
+  info,
+  addToCart,
+  removeFromCart,
+}: {
+  info: Course;
+  addToCart: () => void;
+  removeFromCart: () => void;
+}) => {
+  const [added, setAdded] = useState(false);
+  const { dept, number, title, prereqs, description } = info;
+
+  // we should display *something* if there are no prereqs. this lets
+  // the user have a visual confirmation
+  const prerequisites = prereqs ? (
+    <div className="flex flex-col space-y-1 text-sm">
+      <h4 className="font-semibold">Prerequisites</h4>
+      <div className="flex flex-wrap gap-1">
+        {Array.isArray(prereqs) ? (
+          prereqs.map((course) => <Badge key={course}>{course}</Badge>)
+        ) : (
+          <Badge>{prereqs}</Badge>
+        )}
+      </div>
+    </div>
+  ) : (
+    <h4 className="text-sm font-semibold text-gray-500">No prerequisites!</h4>
+  );
+
+  const addComponent = (
+    <button
+      className="rounded-full bg-sky-500 py-1.5 text-white hover:bg-sky-600 hover:underline"
+      onClick={() => {
+        addToCart();
+        setAdded(true);
+      }}
+    >
+      <span className="font-bold">Add to cart!</span>
+    </button>
+  );
+
+  const removeComponent = (
+    <button
+      className="rounded-full bg-red-500 py-1.5 text-white hover:bg-red-600 hover:underline"
+      onClick={() => {
+        removeFromCart();
+        setAdded(false);
+      }}
+    >
+      <span className="font-bold">Remove from cart</span>
+    </button>
+  );
+
+  return (
+    <Card key={`${dept}-${number}`}>
+      <div>
+        <h3 className="text-lg font-semibold leading-none">
+          {dept} {number}
+        </h3>
+        <h2>{title}</h2>
+      </div>
+      {prerequisites}
+      <div className="flex flex-col space-y-1 text-sm">
+        <h4 className="font-semibold">Description</h4>
+        <div className="flex flex-col space-y-2">
+          <DescriptionText text={description} />
+          {added ? removeComponent : addComponent}
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+const CoursesView = ({
+  setCart,
+}: {
+  setCart: React.Dispatch<React.SetStateAction<Course[]>>;
+}) => {
   const [search, setSearch] = useState("");
 
   // returns a list of courses that match the search query
@@ -56,62 +126,45 @@ const Courses = () => {
 
     return courses.filter(({ number, dept, title, description }) => {
       return (
-        (dept.toLowerCase() + " " + number.toString()).includes(search) ||
+        (dept.toLowerCase() + " " + number).includes(search) ||
         title.toLowerCase().includes(search) ||
         description.toLowerCase().includes(search)
       );
     });
   };
 
-  const courseList = filterCourses(courses, search).map(
-    ({ dept, number, title, prereqs, description }) => {
-      // we should display *something* if there are no prereqs. this lets
-      // the user have a visual confirmation
-      const prerequisites = prereqs ? (
-        <div className="flex flex-col space-y-1 text-sm">
-          <h4 className="font-semibold">Prerequisites</h4>
-          <div className="flex flex-wrap gap-1">
-            {Array.isArray(prereqs) ? (
-              prereqs.map((course) => <Badge key={course}>{course}</Badge>)
-            ) : (
-              <Badge>{prereqs}</Badge>
-            )}
-          </div>
-        </div>
-      ) : (
-        <h4 className="text-sm font-semibold text-gray-500">
-          No prerequisites!
-        </h4>
-      );
+  const courseList = filterCourses(courses, search).map((c) => {
+    const addToCart = () => {
+      console.log(c, "added to cart!");
 
-      return (
-        <Card key={`${dept}-${number}`}>
-          <div>
-            <h3 className="text-lg font-semibold leading-none">
-              {dept} {number}
-            </h3>
-            <h2>{title}</h2>
-          </div>
-          {prerequisites}
-          <div className="flex flex-col space-y-1 text-sm">
-            <h4 className="font-semibold">Description</h4>
-            <DescriptionText text={description} />
-          </div>
-        </Card>
-      );
-    },
-  );
+      // use setCart in here and removeFromCart to update the cart
+    };
+
+    const removeFromCart = () => {
+      console.log(c, "removed from cart!");
+    };
+
+    return (
+      <CourseComponent
+        key={`${c.dept} ${c.number}`}
+        info={c}
+        addToCart={addToCart}
+        removeFromCart={removeFromCart}
+      />
+    );
+  });
 
   return (
-    <main className="flex flex-col items-center space-y-6 px-8 pb-8 pt-[calc(2rem+57px)]">
-      <div className="flex w-1/3 min-w-[250px] flex-col space-y-2">
+    <main className="flex flex-col items-center space-y-8 px-8 pb-8 pt-[calc(2rem+57px)]">
+      <div className="flex w-1/3 min-w-[250px] flex-col space-y-3">
         <p className="text-center font-semibold">
-          Begin searching for a course title, description, or number!
+          Begin searching for a course name, description, or number!
         </p>
         <input
           type="search"
           className="h-10 w-full rounded-md border border-black/30 bg-gray-50 p-2 text-center"
           value={search}
+          placeholder="Search..."
           onChange={(e) => setSearch(e.target.value.toLowerCase())}
         />
       </div>
@@ -128,4 +181,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default CoursesView;
