@@ -6,17 +6,10 @@ function App() {
   return (
     <>
       <Nav />
-      <div
-        style={{
-          width: "100%",
-          boxSizing: "border-box",
-          padding: "0 calc(1rem + 10%)",
-        }}
-      >
+      <div>
         <Courses />
         <Cart />
       </div>
-      <div></div>
     </>
   );
 }

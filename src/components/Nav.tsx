@@ -1,11 +1,7 @@
 const Nav = () => (
-  <div style={{
-    width: '100%',
-    padding: '0 1rem',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-  }}>
+  <div className="w-full bg-blue-100 p-10">
     <h2>Penn Course Cart</h2>
   </div>
-)
+);
 
 export default Nav;
