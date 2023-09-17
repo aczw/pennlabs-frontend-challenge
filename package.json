@@ -20,8 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "tailwindcss build -i src/styles/index.css -o src/styles/tailwind.css",
     "start": "craco start",
+    "tailwind:watch": "tailwindcss build -i src/styles/index.css -o src/styles/tailwind.css --watch",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
