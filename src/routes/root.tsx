@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CoursesView from "../components/CoursesView";
-import Header from "../components/Header";
+import CoursesView from "../components/courses-view";
+import HeaderCart from "../components/header-cart";
 import type { Course } from "../utils/types";
 
 const Root = () => {
@@ -28,7 +28,7 @@ const Root = () => {
 
   return (
     <>
-      <Header cart={cart} />
+      <HeaderCart cart={cart} />
       <CoursesView
         cart={cart}
         addToCart={addToCart}
