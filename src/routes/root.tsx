@@ -1,9 +1,9 @@
 import { useState } from "react";
-import CoursesView from "./components/CoursesView";
-import Header from "./components/Header";
-import type { Course } from "./utils/types";
+import CoursesView from "../components/CoursesView";
+import Header from "../components/Header";
+import type { Course } from "../utils/types";
 
-const App = () => {
+const Root = () => {
   const [cart, setCart] = useState<Course[]>([]);
 
   // the user may already have seven courses in their cart. we return a
@@ -38,4 +38,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Root;
