@@ -6,10 +6,11 @@ const CartView = ({ cart }: { cart: Course[] }) => {
   return (
     <div className="flex justify-end gap-3">
       <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
-        <div className="flex flex-col items-end space-y-2">
+        <div className="flex flex-col items-center space-y-2 md:items-end">
           <h3 className="text-xl font-semibold leading-none">Current cart</h3>
-          <p>
+          <p className="text-center md:text-right">
             When you feel ready, head over to checkout to finalize your courses.
+            Note that you can only have seven courses in your cart at a time.
           </p>
           <button
             disabled={cartEmpty}
@@ -23,8 +24,15 @@ const CartView = ({ cart }: { cart: Course[] }) => {
             Currently empty! Add some courses from below to checkout.
           </div>
         ) : (
-          <div className="flex rounded-md bg-gray-200 p-4 text-gray-500">
-            Some stuff idk
+          <div className="flex flex-col rounded-md bg-gray-200 p-4">
+            {cart.map((crs) => (
+              <p>
+                <span className="font-semibold">
+                  {crs.dept} {crs.number}
+                </span>
+                : {crs.title}
+              </p>
+            ))}
           </div>
         )}
       </div>
