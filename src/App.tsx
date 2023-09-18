@@ -21,6 +21,7 @@ const App = () => {
     <>
       <Header cart={cart} />
       <CoursesView
+        cart={cart}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
       />

@@ -40,14 +40,16 @@ const DescriptionText = ({ text }: { text: string }) => {
 
 const CourseComponent = ({
   info,
+  initAdded,
   handleCartAdd,
   handleCartRemove,
 }: {
   info: Course;
+  initAdded: boolean;
   handleCartAdd: () => void;
   handleCartRemove: () => void;
 }) => {
-  const [added, setAdded] = useState(false);
+  const [added, setAdded] = useState(initAdded);
   const { dept, number, title, prereqs, description } = info;
 
   // we should display *something* if there are no prereqs. this lets
@@ -112,9 +114,11 @@ const CourseComponent = ({
 };
 
 const CoursesView = ({
+  cart,
   addToCart,
   removeFromCart,
 }: {
+  cart: Course[];
   addToCart: (crs: Course) => void;
   removeFromCart: (crs: Course) => void;
 }) => {
@@ -136,10 +140,13 @@ const CoursesView = ({
   };
 
   const courseList = filterCourses(courses, search).map((c) => {
+    const added = cart.some((crs) => crs.number === c.number);
+
     return (
       <CourseComponent
         key={`${c.dept} ${c.number}`}
         info={c}
+        initAdded={added}
         handleCartAdd={() => addToCart(c)}
         handleCartRemove={() => removeFromCart(c)}
       />
