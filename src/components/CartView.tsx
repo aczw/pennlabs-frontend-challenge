@@ -6,7 +6,7 @@ const CartView = ({ cart }: { cart: Course[] }) => {
   return (
     <div className="flex justify-end gap-3">
       <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
-        <div className="flex flex-col items-center space-y-2 md:items-end">
+        <div className="flex flex-col items-center space-y-4 md:items-end">
           <h3 className="text-xl font-semibold leading-none">Current cart</h3>
           <p className="text-center md:text-right">
             When you feel ready, head over to checkout to finalize your courses.
@@ -14,7 +14,7 @@ const CartView = ({ cart }: { cart: Course[] }) => {
           </p>
           <button
             disabled={cartEmpty}
-            className="w-[300px] rounded-full bg-gray-500 py-1.5 font-semibold text-white hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-500"
+            className="w-[200px] rounded-full bg-gray-500 py-1.5 font-semibold text-white hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-500"
           >
             Checkout!
           </button>

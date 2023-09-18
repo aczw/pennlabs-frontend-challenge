@@ -46,7 +46,7 @@ const CourseComponent = ({
 }: {
   info: Course;
   initAdded: boolean;
-  handleCartAdd: () => void;
+  handleCartAdd: () => boolean;
   handleCartRemove: () => void;
 }) => {
   const [added, setAdded] = useState(initAdded);
@@ -73,8 +73,7 @@ const CourseComponent = ({
     <button
       className="rounded-full bg-sky-500 py-1.5 text-white hover:bg-sky-600 hover:underline"
       onClick={() => {
-        handleCartAdd();
-        setAdded(true);
+        setAdded(handleCartAdd());
       }}
     >
       <span className="font-bold">Add to cart!</span>
@@ -119,7 +118,7 @@ const CoursesView = ({
   removeFromCart,
 }: {
   cart: Course[];
-  addToCart: (crs: Course) => void;
+  addToCart: (crs: Course) => boolean;
   removeFromCart: (crs: Course) => void;
 }) => {
   const [search, setSearch] = useState("");
