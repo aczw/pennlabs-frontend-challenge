@@ -154,7 +154,7 @@ const CoursesView = ({
 
   return (
     <main className="flex flex-col items-center space-y-8 px-8 pb-8 pt-[calc(2rem+57px)]">
-      <div className="flex w-1/3 min-w-[250px] flex-col space-y-3">
+      <section className="flex w-1/3 min-w-[250px] flex-col space-y-3">
         <p className="text-center font-semibold">
           Begin searching for a course name, description, or number!
         </p>
@@ -165,15 +165,15 @@ const CoursesView = ({
           placeholder="Search..."
           onChange={(e) => setSearch(e.target.value.toLowerCase())}
         />
-      </div>
+      </section>
       {courseList.length === 0 ? (
         <p className="gap-5 text-zinc-600">
           No courses found! Please refine your search.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <section className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {courseList}
-        </div>
+        </section>
       )}
     </main>
   );

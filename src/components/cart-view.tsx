@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Course } from "~/utils/types";
 
 const CartView = ({ cart }: { cart: Course[] }) => {
@@ -12,12 +13,14 @@ const CartView = ({ cart }: { cart: Course[] }) => {
             When you feel ready, head over to checkout to finalize your courses.
             Note that you can only have seven courses in your cart at a time.
           </p>
-          <button
-            disabled={cartEmpty}
-            className="w-[200px] rounded-full bg-gray-500 py-1.5 font-semibold text-white hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-500"
-          >
-            Checkout!
-          </button>
+          <Link to="/receipt">
+            <button
+              disabled={cartEmpty}
+              className="w-[200px] rounded-full bg-gray-500 py-1.5 font-semibold text-white hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-500"
+            >
+              Checkout!
+            </button>
+          </Link>
         </div>
         {cartEmpty ? (
           <div className="flex items-center justify-center rounded-md bg-gray-200 p-4 text-gray-500">
